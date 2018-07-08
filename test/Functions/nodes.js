@@ -1,15 +1,15 @@
 
 var request = require("request");
-var Login = requeri("./auth");
 
-devicesUIDinterface(`${Login.auth()}`,'00:00:70:b3:d5:6c:d7:3f')
-function devicesUIDinterface(token,uid){
+nodes('a14ca04c8ff54f4f84c2e3fd409966bc')
+
+function nodes(token,vid,ip,mac,dpid,port){
         
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
         request.get({
             headers: {'content-type' : 'application/json','X-Auth-Token' : token },
-            url:     'https://10.192.168.121:8443/sdn/v2.0/net/devices/' + `${uid}` + '/interfaces',
+            url:     'https://10.192.168.121:8443/sdn/v2.0/net/nodes',
             body:  null,
             json : true
           }, function(error, body, response){
