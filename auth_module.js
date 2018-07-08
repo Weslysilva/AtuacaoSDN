@@ -40,11 +40,12 @@ Auth.prototype.test = function() {
         var dbo = db.db("teste");
         var collection = dbo.collection('auth');
 
-        return collection.findOne().toArray();
+        return collection.findOne();
 
     }).then(function(items) {
-        console.log(items);
+        //console.log(items);
         return items;
+
     });
 
     // MongoClient.connect(url, function(err, db) {

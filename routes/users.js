@@ -19,7 +19,9 @@ router.get('/', function(req, res, next) {
     //res.send(auth.test());
 
     auth.test().then(function(items) {
+
         console.info('The promise was fulfilled with items!', items);
+        res.send(items);
     }, function(err) {
         console.error('The promise was rejected', err, err.stack);
     });
