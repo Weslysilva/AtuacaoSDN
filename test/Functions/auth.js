@@ -12,7 +12,7 @@ function auth() {
         json: true
     }, function(error, body, response) {
 
-        console.log(response);
+        console.log(response.record.token);
         //var token = response.record.token;
         //return token;
         

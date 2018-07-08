@@ -1,14 +1,16 @@
-// 1 funcao GET
+var request = require("request");    
 
+//Begin Test
+token = '12196bcf924f43a28e28efc8ce6a8ebe'
+forwardPath(token);
+//End Test
 
-call();
-function call(){
+function forwardPath(token){
 
-    var request = require("../../bibliotecas/node_modules/request");    
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
         request.get({
-            headers: {'content-type' : 'application/json','X-Auth-Token' : '735a384dbce340178b143508df3b4a91'},
+            headers: {'content-type' : 'application/json', 'X-Auth-Token' : token},
             url:     'https://10.192.168.121:8443/sdn/v2.0/net/paths/forward',
             body:  null, // { "X-Auth-Token" : '735a384dbce340178b143508df3b4a91' },
             json : true
