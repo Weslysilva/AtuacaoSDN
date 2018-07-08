@@ -1,10 +1,14 @@
 
-var request = require("../../bibliotecas/node_modules/request");    
-var Login = require("../auth");   
+var request = require("request");    
+var Login = require("./auth");   
 
 async function devices(){
 
-    var token = await Login.auth();
+  var token = Login.auth().then(function(response){
+
+    return response;
+
+  })
 
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
@@ -16,7 +20,7 @@ async function devices(){
           }, function(error, body, response){
             
             console.log(response);
-            return response;
+            //return response;
           });
 }
-
+devices();

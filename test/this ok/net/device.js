@@ -1,7 +1,7 @@
 
 function devices(){
 
-    var request = require("../../bibliotecas/node_modules/request");    
+    var request = require("request");    
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
         request.get({

@@ -1,10 +1,7 @@
 var request = require("request");
-//Faz o login e devolvi um Token.
+
 auth();
-
 function auth() {
-
-    var auth = {}
 
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
@@ -15,8 +12,9 @@ function auth() {
         json: true
     }, function(error, body, response) {
 
-        //return (response.record.token),
-        console.log(response.record.token);
-        //resolve(response);
+        console.log(response);
+        //var token = response.record.token;
+        //return token;
+        
     });
 }

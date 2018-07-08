@@ -1,9 +1,9 @@
 
 //Faz o login e devolvi um Token.
 
-var request = require("../../bibliotecas/node_modules/request");    
+var request = require("request");    
 
-const auth = async function() {
+var auth = async function() {
   
   return new Promise((resolve, reject) => {
 
@@ -11,18 +11,22 @@ const auth = async function() {
     var auth =  {} 
     
     request.post({
+        
         headers: {'content-type' : 'application/json'},
         url:     'https://10.192.168.121:8443/sdn/v2.0/auth',
-        body:    { "login": {"user":"sdn","password":"skyline","domain":"sdn"} },
+        body:    { "login" : {"user":"sdn","password":"skyline","domain":"sdn"} },
         json : true
       }, function(error, body, response){
-      
+        
         if (error) {
           reject(error); 
           return;
         }
-        resolve(response.record.token);
-        //resolve(response);
+        console.log(response.record.token)
+        return token;
+        // resolve(response);
       });
     });    
 };
+
+auth();
