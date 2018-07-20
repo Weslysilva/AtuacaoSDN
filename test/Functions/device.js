@@ -1,5 +1,9 @@
 
 var request = require("request");
+var auth = require("../../classes/midAuth");
+
+
+devices(token);  
 
 function devices(token){
         
@@ -11,10 +15,11 @@ function devices(token){
             body:  null,
             json : true
           }, function(error, body, response){
+            //console.log(response);
             
-            console.log(response);
-
+            console.log("\n\n\n\n\n #########\n", response);
+            
             return response;
-          
+            
           });
 }

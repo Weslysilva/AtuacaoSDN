@@ -1,11 +1,12 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var createError = require('http-errors');       //NodeModule
+var express = require('express');               //NodeModule
+var path = require('path');                     //NodeModule
+var cookieParser = require('cookie-parser');    //NodeModule
+var logger = require('morgan');                 //NodeModule
+
+var indexRouter = require('./routes/index');    //ExpressModule
+var usersRouter = require('./routes/users');    //ExpressModule
 
 var app = express();
 

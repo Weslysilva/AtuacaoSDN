@@ -8,7 +8,7 @@ MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("teste");
 
-    var myobj = { name: "Moisés", address: "Picudo" };
+    var myobj = { name: "sdn", password: "skyline" , token:""};
 
     dbo.collection("auth").insertOne(myobj, function(err, res) {
 

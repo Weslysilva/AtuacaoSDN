@@ -1,5 +1,7 @@
 var request = require("request");
 
+auth();
+
 function auth() {
 
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
@@ -10,10 +12,7 @@ function auth() {
         body: { "login": { "user": "sdn", "password": "skyline", "domain": "sdn" } },
         json: true
     }, function(error, body, response) {
-
         console.log(response.record.token);
-
-        
     });
 
 }

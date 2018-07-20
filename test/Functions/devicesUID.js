@@ -1,8 +1,7 @@
 
 var request = require("request");
 
-
-devicesUID('12196bcf924f43a28e28efc8ce6a8ebe','00:00:70:b3:d5:6c:d7:3f')
+devicesUID('722f8756641f4565a8dcf85f55b55b2c','00:00:70:b3:d5:6c:d7:3f')
 function devicesUID(token,uid){
         
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";

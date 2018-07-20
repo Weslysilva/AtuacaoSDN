@@ -1,0 +1,18 @@
+{ 
+    "uid": "00:00:70:b3:d5:6c:d7:3f",
+    "Device Status": "Online",
+    
+    "device identity": { 
+       "device type": "Default OpenFlow Switch",
+       "vendor" : "Northbound Networks",
+       "product": "Zodiac-FX Rev.A",
+       "fw": "0.84",
+       "serial": "none",
+       "ip": "10.192.168.101",
+       "description": "Worlds smallest OpenFlow switch!",
+       "name": "",
+       "location": "",
+       "contact": "" 
+    },
+        "if count": "0"
+}

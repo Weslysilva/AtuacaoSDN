@@ -10,13 +10,13 @@ var Mid = module.exports = {
     //Busca e retorna token no banco em primeira visita
     //a partir da segunda retorna obj em memoria (if false) -
     //(if true - Atualiza junto ao controlador o token e atualiza nas estruturas)
-    add: async function(up) {
+    getToken: async function(up) {
 
         if (up == false) {
 
             if (Mid.count === 1) {
 
-                await (auth.getAuth().then(function(items) {
+                await auth.getAuth().then(function(items) {
 
                     Mid.token = `${items.token}`;
 
@@ -24,7 +24,7 @@ var Mid = module.exports = {
 
                 }, function(err) {
                     console.error('Promise rejeitada', err, err.stack);
-                }))
+                })
 
                 return Mid.token;
 
