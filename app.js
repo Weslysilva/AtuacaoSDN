@@ -8,6 +8,7 @@ var logger = require('morgan');                 //NodeModule
 var indexRouter = require('./routes/index');    //ExpressModule
 var usersRouter = require('./routes/users');    //ExpressModule
 
+
 var app = express();
 
 // view engine setup
@@ -40,5 +41,8 @@ app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error');
 });
+
+require('./Init.js').init(false, "sdn", "skyline");
+
 
 module.exports = app;

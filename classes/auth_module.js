@@ -12,7 +12,7 @@ Auth.prototype.updateUser = function(username, password, token) {
 
     MongoClient.connect(url, function(err, db) {
         if (err) throw err;
-        var dbo = db.db("teste");
+        var dbo = db.db("Caarf");
 
         var myobj = { name: username, password: password, token: token };
 
@@ -33,7 +33,7 @@ Auth.prototype.getAuth = function() {
     return MongoClient.connect(url).then(function(db) {
 
         //Nome do banco de dados
-        var dbo = db.db("teste");
+        var dbo = db.db("Caarf");
         var collection = dbo.collection('auth');
 
         return collection.findOne();
@@ -55,16 +55,15 @@ Auth.prototype.updateToken = function(token) {
 
             if (err) throw err;
             //Nome do Banco
-            var dbo = db.db("teste");
+            var dbo = db.db("Caarf");
             //Coolection (equivalente a tabela em relational dbs)
             var item1 = await dbo.collection("auth").findOne()
-            let item2 = item1;
 
             item1.token = token;
 
             try {
 
-                let result = await dbo.collection("auth").update(item2, item1)
+                let result = await dbo.collection("auth").update(dbo.collection("auth").findOne(), item1)
                 if (result) {
                     resolve(true);
                 }

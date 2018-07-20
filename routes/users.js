@@ -20,7 +20,7 @@ router.get('/updateCredentials/:username&:password', function(req, res, next) {
 
         if (error) res.send(error);
         else {
-            //console.log(auth.updateUser(req.params.username, req.params.password, response.record.token));
+            console.log(auth.updateUser(req.params.username, req.params.password, response.record.token));
             res.send(`${response}`);
         }
     });
