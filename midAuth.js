@@ -17,7 +17,7 @@ var Mid = module.exports = {
 
             if (!condition) {
 
-                if (visitaCount == 1) {
+                if (Mid.visitaCount == 1) {
 
                     auth.getAuth().then(function(user) {
 
@@ -58,7 +58,7 @@ var Mid = module.exports = {
 
                         }).catch(function(err) {
 
-                            console.log("erro durante atualização do token no banco")
+                            console.log("Erro durante atualização do token no banco")
                             reject(null)
                         })
                     } catch (err) {

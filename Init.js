@@ -51,7 +51,7 @@ module.exports.init = function(init, username, password) {
                         reject(err)
                         throw err
                     }
-                    console.log("3 - document inserted")
+                    console.log("3 - Document inserted")
 
                     let result;
                     mid.obterToken(true).then(function(response) {
