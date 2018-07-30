@@ -41,7 +41,7 @@ app.use(function(err, req, res, next) {
     res.render('error');
 });
 
-require('./Init.js').init(false, "sdn", "skyline");
+require('./Init.js').init(true, "sdn", "skyline");
 
 
 module.exports = app;

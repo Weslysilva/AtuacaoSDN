@@ -51,9 +51,12 @@ Auth.prototype.updateToken = function(token) {
 
     return new Promise(async function(resolve, reject) {
 
-        MongoClient.connect(url, async function(err, db) {
+        await MongoClient.connect(url, async function(err, db) {
 
-            if (err) throw err;
+            if (err) {
+                console.log("Erro durante conexão com o banco(atualização do token), verifique conexão.")
+                reject(false);
+            }
             //Nome do Banco
             var dbo = db.db("Caarf");
             //Coolection (equivalente a tabela em relational dbs)
@@ -64,12 +67,13 @@ Auth.prototype.updateToken = function(token) {
             try {
 
                 let result = await dbo.collection("auth").update(dbo.collection("auth").findOne(), item1)
+                    //console.log(result)
                 if (result) {
                     resolve(true);
                 }
 
             } catch (err) {
-                console.log(err.stack)
+                console.log("Erro durante atualização no banco, verifique conexão" + err.stack)
                 reject(false);
 
             }

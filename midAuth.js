@@ -4,74 +4,78 @@ var rp = require('request-promise');
 
 var Mid = module.exports = {
 
-    count: 1,
-    token: "",
+    visitaCount: 1,
+    tokenAtual: "",
 
     //Busca e retorna token no banco em primeira visita
     //a partir da segunda retorna obj em memoria (if false) -
     //(if true - Atualiza junto ao controlador o token e atualiza nas estruturas)
-    add: async function(up) {
+    obterToken: function(condition) {
 
-        if (up == false) {
+        return new Promise(function(resolve, reject) {
 
-            if (Mid.count === 1) {
 
-                await (auth.getAuth().then(function(items) {
+            if (!condition) {
 
-                    Mid.token = `${items.token}`;
+                if (visitaCount == 1) {
 
-                    Mid.count += 1;
+                    auth.getAuth().then(function(user) {
 
-                }, function(err) {
-                    console.error('Promise rejeitada', err, err.stack);
-                }))
+                        Mid.tokenAtual = `${user.token}`;
+                        Mid.visitaCount += 1;
+                        resolve(Mid.tokenAtual)
+                    }, function(err) {
+                        console.error('Erro ao obter Objeto User no Banco, verifique o serviço', err, err.stack);
+                        reject(null)
 
-                return Mid.token;
+                    })
+                } else resolve(Mid.tokenAtual)
+
 
             } else {
-                return Mid.token;
-            }
 
-        }
+                auth.getAuth().then(async function(user) {
 
-        if (up == true) {
-
-            return new Promise(async function(resolve, reject) {
-
-                var user;
-                var pass;
-
-                process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-
-                auth.getAuth().then(async function(items) {
-
-                    user = `${items.name}`
-                    pass = `${items.password}`
+                    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
                     var options = {
                         method: 'POST',
                         uri: 'https://10.192.168.121:8443/sdn/v2.0/auth',
-                        body: { "login": { "user": `${user}`, "password": `${pass}`, "domain": "sdn" } },
+                        body: { "login": { "user": `${user.name}`, "password": `${user.password}`, "domain": "sdn" } },
                         json: true
                     };
 
+
                     try {
-                        var repos = await rp(options);
-                        Mid.token = repos.record.token
 
+                        //console.log(options)
+                        var resposta = await rp(options);
+                        Mid.tokenAtual = resposta.record.token
+
+                        auth.updateToken(Mid.tokenAtual).then(function() {
+
+                            resolve(Mid.tokenAtual)
+
+                        }).catch(function(err) {
+
+                            console.log("erro durante atualização do token no banco")
+                            reject(null)
+                        })
                     } catch (err) {
-
-                        console.log(err.stack)
-                        reject(false)
+                        console.log('Erro ao obter token atualizado junto ao controlador, verifique conexão ou credenciais', err, err.stack)
+                        reject(null)
                     }
-                    let result = await auth.updateToken(Mid.token);
 
-                    if (result)
-                        resolve(true)
-                    else reject(false)
+                }, function(err) {
+                    console.error('Erro ao obter Objeto User no Banco, verifique o serviço', err, err.stack);
+                    reject(null)
+
                 })
-            });
-        }
+
+            }
+
+        })
+
     },
 
     //Retorna obj auth

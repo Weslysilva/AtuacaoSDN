@@ -5,27 +5,6 @@ var request = require("request");
 var mid = require('../midAuth');
 
 
-/* Funções exemplo
- Atualizar credenciais */
-router.get('/updateCredentials/:username&:password', function(req, res, next) {
-
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-    request.post({
-
-        headers: { 'content-type': 'application/json' },
-        url: 'https://10.192.168.121:8443/sdn/v2.0/auth',
-        body: { "login": { "user": req.params.username, "password": req.params.password, "domain": "sdn" } },
-        json: true
-    }, function(error, body, response) {
-
-        if (error) res.send(error);
-        else {
-            console.log(auth.updateUser(req.params.username, req.params.password, response.record.token));
-            res.send(`${response}`);
-        }
-    });
-
-});
 
 //Consultar obj user no banco
 router.get('/getUser', function(req, res, next) {

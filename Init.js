@@ -10,17 +10,21 @@ module.exports.init = function(init, username, password) {
 
         if (init) {
 
-            var url = "mongodb://localhost:27017/Caarf";
-            MongoClient.connect(url, function(err, db) {
+            var url = "mongodb://localhost:27017/Caarf"
+            await MongoClient.connect(url, function(err, db) {
 
                 if (err) {
                     console.log("Database creation error")
                     reject(err)
-                    throw err;
+                    throw err
                 }
-                console.log("1 - Database created!");
+                console.log("1 - Database created!")
+                db.close()
+            });
 
-                var dbo = db.db();
+            await MongoClient.connect(url, function(err, db) {
+
+                var dbo = db.db("Caarf")
 
                 dbo.createCollection("auth", function(err, res) {
                     if (err) {
@@ -28,11 +32,17 @@ module.exports.init = function(init, username, password) {
                         reject(err)
                         throw err
                     }
-                    console.log("2 - Collection created!");
+                    console.log("2 - Collection created!")
+                    db.close()
                 });
 
+            });
 
-                var myobj = { name: username, password: password, token: "" };
+            MongoClient.connect(url, function(err, db) {
+
+                var dbo = db.db("Caarf");
+
+                var myobj = { name: username, password: password, token: "" }
 
                 dbo.collection("auth").insertOne(myobj, function(err, res) {
 
@@ -41,19 +51,28 @@ module.exports.init = function(init, username, password) {
                         reject(err)
                         throw err
                     }
-                    console.log("3 - document inserted");
+                    console.log("3 - document inserted")
 
-                    let result = mid.add(true);
-                    if (result) console.log('4 - Db Atualizado')
-                    else console.log('Erro durante atualização do token')
+                    let result;
+                    mid.obterToken(true).then(function(response) {
 
+                        result = response
+
+                        if (result != null) {
+                            console.log('4 - Db Atualizado')
+                            resolve(console.log("Init Finalizado"))
+                        }
+
+                    }).catch(function(err) {
+
+                        console.log("Erro durante atualização do token no banco")
+                    })
                 });
 
-                db.close();
-
+                db.close()
             });
 
-        } else reject(false);
+        } else reject(console.log('Init false'))
 
 
     });
