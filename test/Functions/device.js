@@ -13,7 +13,6 @@ function devices(token){
           }, function(error, body, response){
             
             console.log(response);
-
             return response;
           
           });
