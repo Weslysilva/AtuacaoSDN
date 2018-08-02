@@ -9,8 +9,9 @@ module.exports.init = function(init, username, password) {
     return new Promise(async function(resolve, reject) {
 
         if (init) {
-
-            var url = "mongodb://localhost:27017/Caarf"
+            console.log("Init True\n\n")
+            var url = "mongodb://127.0.0.1:27017/Caarf"
+            
             await MongoClient.connect(url, function(err, db) {
 
                 if (err) {
