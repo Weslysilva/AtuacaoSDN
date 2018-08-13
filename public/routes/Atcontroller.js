@@ -4,12 +4,12 @@ var auth = require('../auth_module').Auth;
 var request = require("request");
 var mid = require('../midAuth');
 
-//Consulta todos os dispositivos da rede.
-router.get('/getDevices',async function(req, res, next) {
 
-  var token = await mid.obterToken(false) //Obtem um token do banco de dados local para realizar a chamada no controlador
-  //var token = await mid.obterToken(true) //Obtem um novo token direto do controlador para realizar a chamada e depois atualiza o token do banco.
+router.get('/getDevices',async function(req, res, next) { //Consulta todos os dispositivos da rede.
+  
+  mid.obterToken(false).then(function(token){
 
+    
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; //Correcao forca o uso do Https sem o certificado valido.
     request.get({
         headers: {'content-type' : 'application/json','X-Auth-Token' : token },
@@ -20,6 +20,10 @@ router.get('/getDevices',async function(req, res, next) {
         if(error) { console.log("Atenção! houve um erro durante a requisição ao controlador\n segue abaixo o log:\n\n"+error) } 
         res.send(response);
     });
+  })
+  //Obtem um token do banco de dados local para realizar a chamada no controlador
+  //var token = await mid.obterToken(true) //Obtem um novo token direto do controlador para realizar a chamada e depois atualiza o token do banco.
+
 
 });
 
@@ -42,8 +46,9 @@ router.get('/getDevice', async function(req, res, next) {
 });
 
 
+
 //Coleta a tabela de encaminhamento de um dispositivo.
-router.get('/getPathForward', async function(req, res, next) {
+router.get('/getPathForward', async function(req, res, next) { 
 
   var token = await mid.obterToken(false)
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
@@ -56,19 +61,68 @@ router.get('/getPathForward', async function(req, res, next) {
         if(error) { console.log("Atenção! houve um erro durante a requisição ao controlador\n segue abaixo o log:\n\n"+error) } 
         res.send(response);
       });
-
 });
+
+
+
+
+                                                              // -> POST PATH_FORWARD //
+
+
 
 
 //Coleta os dados de uma plano de encaminhamento de um dispositivo.
 router.get('/getDataPath', async function(req, res, next) {
 
   var token = await mid.obterToken(false)
+    
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
     request.get({
         headers: {'content-type' : 'application/json', 'X-Auth-Token' : token},
         url:     'https://10.192.168.121:8443/sdn/v2.0/of/datapaths/' + `${req.dpid}`, //Utilizar ID do Elemento de Rede.
         body:  null,
+        json : true
+      }, function(error, body, response){
+        if(error) { console.log("Atenção! houve um erro durante a requisição ao controlador\n segue abaixo o log:\n\n"+error) } 
+        res.send(response);
+      });
+
+});
+
+//Coleta os dados de uma plano de encaminhamento de um dispositivo.
+router.post('/postDataPath', async function(req, res, next) {
+
+  var token = await mid.obterToken(false)
+    
+    var datapath = {
+      "datapath": {
+        "dpid": `${req.dpid}`,
+        "negotiated_version": "1.3.0",
+        "ready": "2018-07-31T14:07:55.128Z",
+        "last_message": "2018-07-31T14:25:27.955Z",
+        "num_buffers": `${req.buffer}`,
+        "num_tables": `${req.numberTable}`,
+        "mfr": "Northbound Networks",
+        "hw": "Zodiac-FX Rev.A",
+        "sw": "0.84",
+        "serial": "none",
+        "desc": "World's smallest OpenFlow switch!",
+        "device_ip": `${req.ip}`,
+        "device_port": `${req.port}`,
+        "capabilities": [
+          "flow_stats",
+          "table_stats",
+          "port_stats",
+          "group_stats"
+        ]
+      }
+    }
+    
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+    request.get({
+        headers: {'content-type' : 'application/json', 'X-Auth-Token' : token},
+        url:     'https://10.192.168.121:8443/sdn/v2.0/of/datapaths/' + `${req.dpid}`, //Utilizar ID do Elemento de Rede.
+        body:  datapath,
         json : true
       }, function(error, body, response){
         if(error) { console.log("Atenção! houve um erro durante a requisição ao controlador\n segue abaixo o log:\n\n"+error) } 
@@ -96,7 +150,7 @@ router.get('/getMeter', async function(req, res, next) {
 });
 
 //Edita as metricas 
-router.get('/getMeter', async function(req, res, next) {
+router.post('/postMeter', async function(req, res, next) {
 
   var token = await mid.obterToken(false)
 
@@ -118,10 +172,10 @@ router.get('/getMeter', async function(req, res, next) {
     }
 
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-    request.get({
+    request.post({
         headers: {'content-type' : 'application/json', 'X-Auth-Token' : token},
         url:     'https://10.192.168.121:8443/sdn/v2.0/of/datapaths/' + `${req.dpid}` + '/features/meters', //o Datapath ID deve ser passado na Requsição.
-        body:  meters,
+        body:  meters, //passando a metrica atraves do body.
         json : true
       }, function(error, body, response){
         if(error) { console.log("Atenção! houve um erro durante a requisição ao controlador\n segue abaixo o log:\n\n"+error) } 
@@ -131,10 +185,31 @@ router.get('/getMeter', async function(req, res, next) {
 });
 
 
+//Coleta metricas de GRUPO 
+router.get('/getMeter', async function(req, res, next) {
+
+  if(req.dpid == null){
+
+    res.send(" Nenhuma id de dispositivo foi informado ! ");
+    return;
+
+  }else {ß
+    var token = await mid.obterToken(false)
+      process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+      request.get({
+          headers: {'content-type' : 'application/json', 'X-Auth-Token' : token},
+          url:     'https://10.192.168.121:8443/sdn/v2.0/of/datapaths/' + `${req.dpid}` + '/features/group', //o Datapath ID deve ser passado na Requsição.
+          body:  null,
+          json : true
+        }, function(error, body, response){
+          if(error) { console.log("Atenção! houve um erro durante a requisição ao controlador\n segue abaixo o log:\n\n"+error) } 
+          res.send(response);
+        });
+
+  }
 
 
-
-
+});
 
 
 module.exports = router;
