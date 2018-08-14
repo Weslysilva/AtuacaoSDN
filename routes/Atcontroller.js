@@ -7,8 +7,7 @@ var mid = require('../classes/midAuth');
 
 router.get('/getDevices',async function(req, res, next) { //Consulta todos os dispositivos da rede.
   
-  mid.obterToken(false).then(function(token){
-
+  mid.getToken(false).then(function(token){
     
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; //Correcao forca o uso do Https sem o certificado valido.
     request.get({
@@ -193,7 +192,7 @@ router.get('/getMeter', async function(req, res, next) {
     res.send(" Nenhuma id de dispositivo foi informado ! ");
     return;
 
-  }else {ß
+  }else {
     var token = await mid.obterToken(false)
       process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
       request.get({

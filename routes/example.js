@@ -16,14 +16,14 @@ router.get('/getUser', function(req, res, next) {
 //Consulta a token no container (insere no container se == null)
 router.get('/getToken', function(req, res, next) {
 
-    mid.obterToken(false).then(function(items) { res.send(items) })
+    mid.getToken(false).then(function(items) { res.send(items) })
 
 });
 
 //Atualiza token no banco e no container
 router.get('/updateToken', async function(req, res, next) {
 
-    mid.obterToken(true).then(function(items) { res.send(items) }).catch(function() { console.log('erro') })
+    mid.getToken(true).then(function(items) { res.send(items) }).catch(function() { console.log('erro') })
 
 });
 
