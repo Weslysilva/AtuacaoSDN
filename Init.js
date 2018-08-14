@@ -1,7 +1,7 @@
 var MongoClient = require('mongodb').MongoClient;
-var auth = require('./auth_module.js').Auth;
+var auth = require('./classes/auth_module.js').Auth;
 var request = require("request");
-var mid = require('./midAuth.js');
+var mid = require('./classes/midAuth.js');
 
 module.exports.init = function(init, username, password) {
 

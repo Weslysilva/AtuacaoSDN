@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var auth = require('../auth_module').Auth;
+var auth = require('../classes/auth_module').Auth;
 var request = require("request");
-var mid = require('../midAuth');
+var mid = require('../classes/midAuth');
 
 
 router.get('/getDevices',async function(req, res, next) { //Consulta todos os dispositivos da rede.
